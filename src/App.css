@@ -24,6 +24,7 @@ h3 {
   font-size: 1.8rem;
 }
 
+.wb-login,
 .wb-add {
   display: grid;
   grid-template-columns: 300px;
