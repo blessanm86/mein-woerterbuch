@@ -1,38 +1,71 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
+body {
+  font-size: 16px;
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  color: #ffffff;
+}
+
+.woerterbuch {
+  display: grid;
+  grid-template-columns: max-content;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  grid-gap: 50px;
 }
 
-.App-link {
-  color: #61dafb;
+h1,
+h3 {
+  margin: 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+h1 {
+  font-size: 3.2rem;
+}
+
+h3 {
+  font-size: 1.8rem;
+}
+
+.wb-add {
+  display: grid;
+  grid-template-columns: 300px;
+  grid-gap: 10px;
+  justify-content: center;
+}
+
+select,
+input,
+button {
+  background-color: #fff;
+  height: 48px;
+  font-size: 1.5rem;
+  padding: 0 10px;
+}
+
+.wb-view {
+  display: grid;
+  grid-gap: 20px;
+}
+
+.wb-word {
+  max-width: 356px;
+  display: grid;
+  grid-gap: 5px;
+}
+
+.wb-meaning,
+.wb-note {
+  padding-left: 10px;
+}
+
+.wb-meaning {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.wb-note {
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.wb-capitalize {
+  text-transform: capitalize;
 }
