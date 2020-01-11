@@ -1,63 +1,78 @@
-import React, { useReducer } from "react";
+import React from "react";
 
-const INITIAL_STATE = {
-  word: "",
-  article: "",
-  meaning: "",
-  note: "",
-  isValid: true
-};
+import useForm from "../hooks/useForm";
 
-function isValid(values) {
-  return !values.some(value => !Boolean(value));
-}
-
-function reducer(state, action) {
-  const { type, field, value } = action;
-
-  if (type === "reset") return INITIAL_STATE;
-
-  const newState = {
-    ...state,
-    [field]: value.toLowerCase()
-  };
-
-  const { article, word, meaning } = newState;
-
-  return {
-    ...newState,
-    isValid: isValid([article, word, meaning])
-  };
-}
+const INITIAL_STATE = [
+  {
+    name: "article",
+    type: "select",
+    value: "",
+    required: true,
+    options: [
+      { label: "Select Article", value: "" },
+      { label: "Der", value: "der" },
+      { label: "Die", value: "die" },
+      { label: "Das", value: "das" }
+    ]
+  },
+  {
+    name: "word",
+    placeholder: "Word",
+    type: "text",
+    value: "",
+    required: true
+  },
+  {
+    name: "meaning",
+    placeholder: "Meaning",
+    type: "text",
+    value: "",
+    required: true
+  },
+  {
+    name: "note",
+    placeholder: "Note",
+    type: "text",
+    value: ""
+  }
+];
 
 function Add({ onAdd }) {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-  const { article, word, meaning, note, isValid } = state;
-
-  const onChange = evt =>
-    dispatch({ type: "edit", field: evt.target.name, value: evt.target.value });
+  const [state, [onChange, reset], isValid] = useForm(INITIAL_STATE);
 
   const addWord = () => {
-    onAdd(state);
-    dispatch({ type: "reset" });
+    const word = state.reduce((prev, property) => {
+      return {
+        ...prev,
+        [property.name]: property.value
+      };
+    }, {});
+    onAdd(word);
+    reset();
   };
 
   return (
     <section className="wb-add">
-      <select name="article" value={article} onChange={onChange}>
-        <option value="">Select Article</option>
-        <option value="der">der</option>
-        <option value="die">die</option>
-        <option value="das">das</option>
-      </select>
-      <input placeholder="Word" name="word" value={word} onChange={onChange} />
-      <input
-        placeholder="Meaning"
-        name="meaning"
-        value={meaning}
-        onChange={onChange}
-      />
-      <input placeholder="Note" name="note" value={note} onChange={onChange} />
+      {state.map(input => {
+        if (input.type === "select") {
+          return (
+            <select
+              key={input.name}
+              name={input.name}
+              value={input.name}
+              onChange={onChange}
+            >
+              {input.options.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          );
+        }
+
+        return <input {...input} key={input.name} onChange={onChange} />;
+      })}
       <button disabled={!isValid} onClick={addWord}>
         Add Word
       </button>

@@ -1,56 +1,32 @@
-import React, { useReducer } from "react";
+import React from "react";
 
-const INITIAL_STATE = {
-  email: "blessanm86@gmail.com",
-  password: "",
-  isValid: ""
-};
+import useForm from "../hooks/useForm";
 
-function isValid(values) {
-  return !values.some(value => !Boolean(value));
-}
-
-function reducer(state, action) {
-  const { type, field, value } = action;
-
-  if (type === "reset") return INITIAL_STATE;
-
-  const newState = {
-    ...state,
-    [field]: value
-  };
-
-  const { email, password } = newState;
-
-  return {
-    ...newState,
-    isValid: isValid([email, password])
-  };
-}
+const INITIAL_STATE = [
+  {
+    placeholder: "Email",
+    type: "email",
+    name: "email",
+    value: "blessanm86@gmail.com",
+    required: true
+  },
+  {
+    placeholder: "Password",
+    type: "password",
+    name: "password",
+    value: "",
+    required: true
+  }
+];
 
 function Login() {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-  const { email, password, isValid } = state;
-
-  const onChange = evt =>
-    dispatch({ type: "edit", field: evt.target.name, value: evt.target.value });
+  const [state, [onChange], isValid] = useForm(INITIAL_STATE);
 
   return (
     <section className="wb-login">
-      <input
-        placeholder="Email"
-        name="email"
-        type="email"
-        value={email}
-        onChange={onChange}
-      />
-      <input
-        placeholder="Password"
-        name="password"
-        type="password"
-        value={password}
-        onChange={onChange}
-      />
+      {state.map(input => (
+        <input {...input} key={input.name} onChange={onChange} />
+      ))}
       <button disabled={!isValid}>Login</button>
     </section>
   );
