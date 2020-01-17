@@ -1,6 +1,7 @@
 import React from "react";
 
 import useForm from "../hooks/useForm";
+import useFirebase from "../hooks/useFirebase";
 
 const INITIAL_STATE = [
   {
@@ -20,14 +21,29 @@ const INITIAL_STATE = [
 ];
 
 function Login() {
-  const [state, [onChange], isValid] = useForm(INITIAL_STATE);
+  const [state, [onChange, reset], isValid] = useForm(INITIAL_STATE);
+  const { user, loginToFirebase, logout } = useFirebase();
+  window.logout = logout;
 
-  return (
+  const login = () => {
+    const { email, password } = state.reduce((prev, property) => {
+      return {
+        ...prev,
+        [property.name]: property.value
+      };
+    }, {});
+    loginToFirebase(email, password);
+    reset();
+  };
+
+  return user ? null : (
     <section className="wb-login">
       {state.map(input => (
         <input {...input} key={input.name} onChange={onChange} />
       ))}
-      <button disabled={!isValid}>Login</button>
+      <button disabled={!isValid} onClick={login}>
+        Login
+      </button>
     </section>
   );
 }

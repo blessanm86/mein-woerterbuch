@@ -1,6 +1,10 @@
 import React from "react";
 
+import useFirebase from "../hooks/useFirebase";
+
 function View({ words }) {
+  // const { user } = useFirebase();
+
   return (
     <section className="wb-view">
       {words.map(({ word, article, meaning, note }, index) => (
