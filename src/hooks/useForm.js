@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 
-function useForm(inputs) {
+function useForm(inputs, customReducer) {
   function onInputChange(evt) {
     const {
       target: { name, value }
@@ -35,7 +35,11 @@ function useForm(inputs) {
       ...inputs.slice(index + 1)
     ];
 
-    return [newInputs, [onInputChange, reset], !isValid(newInputs)];
+    const finalInputs = customReducer
+      ? customReducer(newInputs, action)
+      : newInputs;
+
+    return [finalInputs, [onInputChange, reset], !isValid(finalInputs)];
   }
 
   const INITIAL_STATE = [inputs, [onInputChange, reset], false];

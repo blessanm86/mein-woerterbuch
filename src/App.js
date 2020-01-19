@@ -1,20 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
+
+import useFirebase from "./hooks/useFirebase";
 
 import Login from "./components/Login";
 import Add from "./components/Add";
 import View from "./components/View";
 
-// import firebase from "firebase/app";
-// import "firebase/auth";
-// import "firebase/firestore";
-
 function App() {
   const [words, setWords] = useState([]);
+  const { user, getAllWords, logout } = useFirebase();
+  window.logout = logout;
 
-  const addWord = word => {
-    setWords([{ ...word }, ...words]);
+  const getWords = () => {
+    user && getAllWords().then(setWords);
   };
+
+  useEffect(getWords, [user, getAllWords]);
 
   return (
     <section className="woerterbuch">
@@ -22,9 +24,15 @@ function App() {
         <h1>Mein</h1>
         <h1>Wörterbuch</h1>
       </header>
-      <Login />
-      <Add onAdd={addWord} />
-      <View words={words} />
+      {user ? (
+        <>
+          {/* <button onClick={logout}>Logout</button> */}
+          <Add onAdd={getWords} />
+          <View words={words} />
+        </>
+      ) : (
+        <Login />
+      )}
     </section>
   );
 }
