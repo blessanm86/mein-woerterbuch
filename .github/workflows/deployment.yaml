@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: sudo chown -R $USER /usr/local/lib/node_modules && yarn && npm install -g firebase-tools
+        run: sudo chown -R $USER /usr/local && yarn && npm install -g firebase-tools
       - name: Build
         run: yarn run build
       - name: Deploy
