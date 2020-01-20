@@ -13,10 +13,10 @@ function App() {
   window.logout = logout;
 
   const getWords = () => {
-    user && getAllWords().then(setWords);
+    getAllWords().then(setWords);
   };
 
-  useEffect(getWords, [user, getAllWords]);
+  useEffect(getWords, [getAllWords]);
 
   return (
     <section className="woerterbuch">
@@ -24,15 +24,9 @@ function App() {
         <h1>Mein</h1>
         <h1>Wörterbuch</h1>
       </header>
-      {user ? (
-        <>
-          {/* <button onClick={logout}>Logout</button> */}
-          <Add onAdd={getWords} />
-          <View words={words} />
-        </>
-      ) : (
-        <Login />
-      )}
+      {/* <button onClick={logout}>Logout</button> */}
+      {user ? <Add onAdd={getWords} /> : <Login />}
+      <View words={words} />
     </section>
   );
 }
