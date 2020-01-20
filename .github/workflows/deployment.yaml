@@ -10,12 +10,16 @@ on:
 
 jobs:
   build:
-    name: Deploy
+    name: Build & Deploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
       - name: Install Dependencies
-        run: yarn
+        run: yarn && yarn global add firebase-tools
       - name: Build
         run: yarn run build
+      - name: Deploy
+        run: firebase deploy --token FIREBASE_LOGIN_CI_TOKEN
+        env:
+          FIREBASE_LOGIN_CI_TOKEN: ${{ secrets.FIREBASE_LOGIN_CI_TOKEN }}
