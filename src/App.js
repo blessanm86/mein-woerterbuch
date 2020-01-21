@@ -13,7 +13,7 @@ function App() {
   window.logout = logout;
 
   const getWords = () => {
-    // getAllWords().then(setWords);
+    getAllWords().then(setWords);
   };
 
   useEffect(getWords, [getAllWords]);
