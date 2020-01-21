@@ -21,7 +21,7 @@ const INITIAL_STATE = [
 ];
 
 function Login() {
-  const [state, [onChange, reset], isValid] = useForm(INITIAL_STATE);
+  const { state, isValid, change, reset } = useForm(INITIAL_STATE);
   const { loginToFirebase } = useFirebase();
 
   const login = () => {
@@ -38,7 +38,7 @@ function Login() {
   return (
     <section className="wb-login">
       {state.map(input => (
-        <input {...input} key={input.name} onChange={onChange} />
+        <input {...input} key={input.name} onChange={change} />
       ))}
       <button disabled={!isValid} onClick={login}>
         Login

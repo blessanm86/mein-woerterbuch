@@ -59,7 +59,8 @@ function getAllWords() {
       const words = [];
       snapshot.forEach(doc => words.push(doc.data()));
       return words;
-    });
+    })
+    .catch(err => console.log(err));
 }
 
 let firbaseAuthStateListener;

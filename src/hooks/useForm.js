@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
-function useForm(inputs, customReducer) {
-  function onInputChange(evt) {
+function useForm(inputs, options = {}) {
+  function change(evt) {
     const {
       target: { name, value }
     } = evt;
@@ -12,8 +12,8 @@ function useForm(inputs, customReducer) {
     dispatch({ type: "reset" });
   }
 
-  function isValid(inputs) {
-    return inputs.some(input => {
+  function validator(inputs) {
+    return !inputs.some(input => {
       if (input.required && !input.value) {
         return true;
       }
@@ -23,29 +23,28 @@ function useForm(inputs, customReducer) {
   }
 
   function reducer(state, action) {
-    const [inputs] = state;
+    const { state: inputs } = state;
     const { type, name, value } = action;
 
     if (type === "reset") return INITIAL_STATE;
 
     const index = inputs.findIndex(input => input.name === name);
-    const newInputs = [
-      ...inputs.slice(0, index),
-      { ...inputs[index], value },
-      ...inputs.slice(index + 1)
-    ];
+    const newInputs = [...inputs.slice(0, index), { ...inputs[index], value }, ...inputs.slice(index + 1)];
 
-    const finalInputs = customReducer
-      ? customReducer(newInputs, action)
-      : newInputs;
+    const finalInputs = customReducer ? customReducer(newInputs, action) : newInputs;
+    const isValid = customValidator ? customValidator(finalInputs) : validator(finalInputs);
 
-    return [finalInputs, [onInputChange, reset], !isValid(finalInputs)];
+    return { ...state, state: finalInputs, isValid };
   }
 
-  const INITIAL_STATE = [inputs, [onInputChange, reset], false];
-
+  const { reducer: customReducer, validator: customValidator } = options;
+  const INITIAL_STATE = {
+    state: inputs,
+    isValid: false,
+    change,
+    reset
+  };
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
-
   return state;
 }
 
