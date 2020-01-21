@@ -21,7 +21,6 @@ const INITIAL_STATE = [
 ];
 
 function Login() {
-  // const [state, [onChange, reset], isValid] = useForm(INITIAL_STATE);
   const { state, isValid, change, reset } = useForm(INITIAL_STATE);
   const { loginToFirebase } = useFirebase();
 

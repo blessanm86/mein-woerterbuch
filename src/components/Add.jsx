@@ -58,27 +58,45 @@ function reducer(state, action) {
   if (type === "edit" && name === "type") {
     if (value !== "noun") {
       const index = state.findIndex(input => input.name === "article");
-      return [
-        ...state.slice(0, index),
-        { ...state[index], value: "", disabled: true },
-        ...state.slice(index + 1)
-      ];
+      return [...state.slice(0, index), { ...state[index], value: "", disabled: true }, ...state.slice(index + 1)];
     } else {
       const index = state.findIndex(input => input.name === "article");
 
-      return [
-        ...state.slice(0, index),
-        { ...state[index], disabled: false },
-        ...state.slice(index + 1)
-      ];
+      return [...state.slice(0, index), { ...state[index], disabled: false }, ...state.slice(index + 1)];
     }
   }
 
   return state;
 }
 
+function validator(inputs) {
+  const inputMap = inputs.reduce((map, input) => {
+    map[input.name] = input;
+    return map;
+  }, {});
+
+  const requiredInputs = !inputs.some(input => {
+    if (input.required && !input.value) {
+      return true;
+    }
+
+    return false;
+  });
+
+  if (!requiredInputs) {
+    return false;
+  } else {
+    const { type, article } = inputMap;
+    if (type.value === "noun" && !article.value) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+}
+
 function Add({ onAdd }) {
-  const [state, [onChange, reset], isValid] = useForm(INITIAL_STATE, reducer);
+  const { state, isValid, change, reset } = useForm(INITIAL_STATE, { reducer, validator });
   const { addWordToFirebase } = useFirebase();
 
   const addWord = () => {
@@ -99,13 +117,7 @@ function Add({ onAdd }) {
       {state.map(input => {
         if (input.type === "select") {
           return (
-            <select
-              key={input.name}
-              name={input.name}
-              value={input.value}
-              onChange={onChange}
-              disabled={input.disabled}
-            >
+            <select key={input.name} name={input.name} value={input.value} onChange={change} disabled={input.disabled}>
               {input.options.map(option => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -115,7 +127,7 @@ function Add({ onAdd }) {
           );
         }
 
-        return <input {...input} key={input.name} onChange={onChange} />;
+        return <input {...input} key={input.name} onChange={change} />;
       })}
       <button disabled={!isValid} onClick={addWord}>
         Add Word
