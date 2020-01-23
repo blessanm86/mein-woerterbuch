@@ -15,4 +15,4 @@ jobs:
       - name: Install Dependencies
         run: sudo chown -R $USER /usr/local && yarn
       - name: Test
-        run: yarn run test
+        run: yarn run test --watchAll=false
