@@ -37,6 +37,8 @@ function useForm(inputs, options = {}) {
     return { ...state, state: finalInputs, isValid };
   }
 
+  if (!inputs) throw new Error("Must pass in an array of inputs");
+
   const { reducer: customReducer, validator: customValidator } = options;
   const INITIAL_STATE = {
     state: inputs,
@@ -44,7 +46,8 @@ function useForm(inputs, options = {}) {
     change,
     reset
   };
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const reducerFn = customReducer ? customReducer : reducer;
+  const [state, dispatch] = useReducer(reducerFn, INITIAL_STATE);
   return state;
 }
 
