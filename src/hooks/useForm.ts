@@ -28,7 +28,7 @@ interface Action {
   value?: string;
 }
 
-function useForm(inputs: Array<Input>, options: Options = {}) {
+function useForm(inputs: Array<Input>, options: Options = {}): State {
   function change(evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const {
       target: { name, value }
