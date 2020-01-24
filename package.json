@@ -25,13 +25,14 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "yarn run test --watchAll=false",
     "eject": "react-scripts eject",
     "format": "prettier --write"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn test"
+      "pre-push": "yarn test:ci"
     }
   },
   "lint-staged": {
