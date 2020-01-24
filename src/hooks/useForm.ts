@@ -1,6 +1,6 @@
 import { useReducer } from "react";
 
-function useForm(inputs, options = {}) {
+function useForm(inputs: Array<Object>, options = {}) {
   function change(evt) {
     const {
       target: { name, value }
