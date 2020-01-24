@@ -1,7 +1,35 @@
-import { useReducer } from "react";
+import { useReducer, ChangeEvent } from "react";
 
-function useForm(inputs: Array<Object>, options = {}) {
-  function change(evt) {
+interface Input {
+  name: string;
+  type: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  options?: Array<{ label: string; value: string }>;
+  value: string;
+}
+
+interface Options {
+  reducer?: Function;
+  validator?: Function;
+}
+
+interface State {
+  state: Array<Input>;
+  isValid: boolean;
+  change: Function;
+  reset: Function;
+}
+
+interface Action {
+  type: string;
+  name?: string;
+  value?: string;
+}
+
+function useForm(inputs: Array<Input>, options: Options = {}) {
+  function change(evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const {
       target: { name, value }
     } = evt;
@@ -12,7 +40,7 @@ function useForm(inputs: Array<Object>, options = {}) {
     dispatch({ type: "reset" });
   }
 
-  function validator(inputs) {
+  function validator(inputs: Array<Input>) {
     return !inputs.some(input => {
       if (input.required && !input.value) {
         return true;
@@ -22,7 +50,7 @@ function useForm(inputs: Array<Object>, options = {}) {
     });
   }
 
-  function reducer(state, action) {
+  function reducer(state: State, action: Action): State {
     const { state: inputs } = state;
     const { type, name, value } = action;
 
@@ -46,8 +74,8 @@ function useForm(inputs: Array<Object>, options = {}) {
     change,
     reset
   };
-  const reducerFn = customReducer ? customReducer : reducer;
-  const [state, dispatch] = useReducer(reducerFn, INITIAL_STATE);
+
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
   return state;
 }
 

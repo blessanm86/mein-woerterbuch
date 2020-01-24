@@ -21,7 +21,7 @@ const INITIAL_STATE = [
     name: "article",
     type: "select",
     value: "",
-    // required: true,
+    required: true,
     options: [
       { label: "Select Article", value: "" },
       { label: "Der", value: "der" },
