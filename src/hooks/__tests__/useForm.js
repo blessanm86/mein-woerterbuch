@@ -73,12 +73,8 @@ describe("Hooks: useForm Tests", () => {
 
   test("Should return the valid state based on custom reducer passed", () => {
     function reducer(state, action) {
-      const { state: inputs } = state;
       const { value } = action;
-      return {
-        ...state,
-        state: [inputs[0], { ...inputs[1], value: value + "123" }]
-      };
+      return [state[0], { ...state[1], value: value + "123" }];
     }
 
     const { result } = renderHook(() => useForm(INITIAL_STATE, { reducer }));
