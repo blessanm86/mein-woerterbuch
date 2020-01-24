@@ -58,11 +58,19 @@ function reducer(state, action) {
   if (type === "edit" && name === "type") {
     if (value !== "noun") {
       const index = state.findIndex(input => input.name === "article");
-      return [...state.slice(0, index), { ...state[index], value: "", disabled: true }, ...state.slice(index + 1)];
+      return [
+        ...state.slice(0, index),
+        { ...state[index], value: "", disabled: true },
+        ...state.slice(index + 1)
+      ];
     } else {
       const index = state.findIndex(input => input.name === "article");
 
-      return [...state.slice(0, index), { ...state[index], disabled: false }, ...state.slice(index + 1)];
+      return [
+        ...state.slice(0, index),
+        { ...state[index], disabled: false },
+        ...state.slice(index + 1)
+      ];
     }
   }
 
@@ -96,7 +104,10 @@ function validator(inputs) {
 }
 
 function Add({ onAdd }) {
-  const { state, isValid, change, reset } = useForm(INITIAL_STATE, { reducer, validator });
+  const { state, isValid, change, reset } = useForm(INITIAL_STATE, {
+    reducer,
+    validator
+  });
   const { addWordToFirebase } = useFirebase();
 
   const addWord = () => {
@@ -117,7 +128,13 @@ function Add({ onAdd }) {
       {state.map(input => {
         if (input.type === "select") {
           return (
-            <select key={input.name} name={input.name} value={input.value} onChange={change} disabled={input.disabled}>
+            <select
+              key={input.name}
+              name={input.name}
+              value={input.value}
+              onChange={change}
+              disabled={input.disabled}
+            >
               {input.options.map(option => (
                 <option key={option.value} value={option.value}>
                   {option.label}

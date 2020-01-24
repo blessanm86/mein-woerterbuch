@@ -75,7 +75,10 @@ describe("Hooks: useForm Tests", () => {
     function reducer(state, action) {
       const { state: inputs } = state;
       const { value } = action;
-      return { ...state, state: [inputs[0], { ...inputs[1], value: value + "123" }] };
+      return {
+        ...state,
+        state: [inputs[0], { ...inputs[1], value: value + "123" }]
+      };
     }
 
     const { result } = renderHook(() => useForm(INITIAL_STATE, { reducer }));

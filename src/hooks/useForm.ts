@@ -57,10 +57,18 @@ function useForm(inputs: Array<Input>, options: Options = {}): State {
     if (type === "reset") return INITIAL_STATE;
 
     const index = inputs.findIndex(input => input.name === name);
-    const newInputs = [...inputs.slice(0, index), { ...inputs[index], value }, ...inputs.slice(index + 1)];
+    const newInputs = [
+      ...inputs.slice(0, index),
+      { ...inputs[index], value },
+      ...inputs.slice(index + 1)
+    ];
 
-    const finalInputs = customReducer ? customReducer(newInputs, action) : newInputs;
-    const isValid = customValidator ? customValidator(finalInputs) : validator(finalInputs);
+    const finalInputs = customReducer
+      ? customReducer(newInputs, action)
+      : newInputs;
+    const isValid = customValidator
+      ? customValidator(finalInputs)
+      : validator(finalInputs);
 
     return { ...state, state: finalInputs, isValid };
   }
