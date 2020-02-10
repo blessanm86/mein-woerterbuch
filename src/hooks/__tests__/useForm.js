@@ -109,4 +109,19 @@ describe("Hooks: useForm Tests", () => {
 
     expect(result.current.isValid).toBe(true);
   });
+
+  test("Should return the isValue as false if any input has empty value", () => {
+    const { result } = renderHook(() => useForm(INITIAL_STATE));
+
+    act(() => {
+      result.current.change({
+        target: {
+          name: "password",
+          value: ""
+        }
+      });
+    });
+
+    expect(result.current.isValid).toBe(false);
+  });
 });

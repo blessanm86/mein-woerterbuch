@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-import useFirebase from "./hooks/useFirebase";
+import useFirebase from "../hooks/useFirebase";
 
-import Login from "./components/Login";
-import Add from "./components/Add";
-import View from "./components/View";
+import Login from "./Login";
+import Add from "./Add";
+import View from "./View";
 
 function App() {
   const [words, setWords] = useState([]);

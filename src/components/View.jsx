@@ -1,6 +1,6 @@
 import React from "react";
 
-function View({ words }) {
+function View({ words = [] }) {
   return (
     <section className="wb-view">
       {words.map(({ word, article, meaning, note, type }, index) => (
