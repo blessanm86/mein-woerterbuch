@@ -1,12 +1,11 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, wait } from "@testing-library/react";
 import App from "../App";
 import useFirebase from "../../hooks/useFirebase";
-import { act } from "react-test-renderer";
 
 jest.mock("../../hooks/useFirebase");
 
-test("Login Page", () => {
+test("Login Page", async () => {
   useFirebase.mockReturnValue({
     user: null,
     getAllWords: () =>
@@ -26,4 +25,6 @@ test("Login Page", () => {
   expect(passwordInput).toBeInTheDocument();
   expect(loginButton).toBeInTheDocument();
   expect(loginButton).toBeDisabled();
+
+  await wait();
 });
