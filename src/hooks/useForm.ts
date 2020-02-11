@@ -1,4 +1,4 @@
-import { useReducer, ChangeEvent } from "react";
+import { useReducer, ChangeEvent, ChangeEventHandler } from "react";
 
 interface Input {
   name: string;
@@ -18,7 +18,7 @@ interface Options {
 interface State {
   state: Array<Input>;
   isValid: boolean;
-  change: Function;
+  change: ChangeEventHandler;
   reset: Function;
 }
 

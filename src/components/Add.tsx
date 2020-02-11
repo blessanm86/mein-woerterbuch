@@ -3,10 +3,27 @@ import React from "react";
 import useForm from "../hooks/useForm";
 import useFirebase from "../hooks/useFirebase";
 
+interface Input {
+  name: string;
+  type: string;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  options?: Array<{ label: string; value: string }>;
+  value: string;
+}
+
+interface Action {
+  type: string;
+  name: string;
+  value: string;
+}
+
 const INITIAL_STATE = [
   {
     name: "type",
     type: "select",
+    value: "",
     placeholder: "Type",
     required: true,
     options: [
@@ -52,7 +69,7 @@ const INITIAL_STATE = [
   }
 ];
 
-function reducer(state, action) {
+function reducer(state: Array<Input>, action: Action) {
   const { type, name, value } = action;
 
   if (type === "edit" && name === "type") {
@@ -77,11 +94,15 @@ function reducer(state, action) {
   return state;
 }
 
-function validator(inputs) {
+function validator(inputs: Array<Input>) {
+  interface InputMap {
+    [key: string]: Input;
+  }
+
   const inputMap = inputs.reduce((map, input) => {
     map[input.name] = input;
     return map;
-  }, {});
+  }, {} as InputMap);
 
   const requiredInputs = !inputs.some(input => {
     if (input.required && !input.value) {
@@ -103,7 +124,7 @@ function validator(inputs) {
   }
 }
 
-function Add({ onAdd }) {
+function Add({ onAdd }: { onAdd: Function }) {
   const { state, isValid, change, reset } = useForm(INITIAL_STATE, {
     reducer,
     validator
@@ -135,7 +156,7 @@ function Add({ onAdd }) {
               onChange={change}
               disabled={input.disabled}
             >
-              {input.options.map(option => (
+              {input.options?.map(option => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>

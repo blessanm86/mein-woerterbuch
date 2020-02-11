@@ -3,6 +3,11 @@ import React from "react";
 import useForm from "../hooks/useForm";
 import useFirebase from "../hooks/useFirebase";
 
+interface State {
+  email: string;
+  password: string;
+}
+
 const INITIAL_STATE = [
   {
     placeholder: "Email",
@@ -30,7 +35,7 @@ function Login() {
         ...prev,
         [property.name]: property.value
       };
-    }, {});
+    }, {} as State);
     loginToFirebase(email, password);
     reset();
   };

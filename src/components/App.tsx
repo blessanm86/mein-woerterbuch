@@ -7,10 +7,16 @@ import Login from "./Login";
 import Add from "./Add";
 import View from "./View";
 
+interface Global extends Window {
+  logout?: Function;
+}
+
 function App() {
   const [words, setWords] = useState([]);
   const { user, getAllWords, logout } = useFirebase();
-  window.logout = logout;
+
+  let global: Global = window;
+  global.logout = logout;
 
   const getWords = () => {
     getAllWords().then(setWords);
