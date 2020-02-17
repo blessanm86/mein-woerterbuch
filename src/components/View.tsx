@@ -1,6 +1,11 @@
 import React from "react";
+import { WordInterface } from "../hooks/useFirebase";
 
-function View({ words = [] }) {
+interface PropsInterface {
+  words: WordInterface[];
+}
+
+function View({ words = [] }: PropsInterface) {
   return (
     <section className="wb-view">
       {words.map(({ word, article, meaning, note, type }, index) => (

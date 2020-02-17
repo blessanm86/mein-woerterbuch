@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-import useFirebase from "../hooks/useFirebase";
+import useFirebase, { WordInterface } from "../hooks/useFirebase";
 
 import Login from "./Login";
 import Add from "./Add";
 import View from "./View";
 
+interface Global {
+  logout?: Function;
+}
+
 function App() {
-  const [words, setWords] = useState([]);
+  const [words, setWords] = useState<WordInterface[]>([]);
   const { user, getAllWords, logout } = useFirebase();
-  window.logout = logout;
+  (window as Global).logout = logout;
 
   const getWords = () => {
-    getAllWords().then(setWords);
+    getAllWords().then(words => words && setWords(words));
   };
 
   useEffect(getWords, [getAllWords]);

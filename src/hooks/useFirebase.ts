@@ -3,6 +3,15 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 
+export interface WordInterface {
+  article: string;
+  meaning: string;
+  note: string;
+  timestamp: firebase.firestore.Timestamp;
+  type: string;
+  word: string;
+}
+
 const firebaseConfig = {
   apiKey: "AIzaSyAWznMXfEF-FMt9OUT10Twzxr382zfs3MU",
   authDomain: "mein-woerterbuch.firebaseapp.com",
@@ -14,7 +23,7 @@ const firebaseConfig = {
   measurementId: "G-06SEN5MFN2"
 };
 
-function loginToFirebase(email, password) {
+function loginToFirebase(email: string, password: string): void {
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
@@ -34,7 +43,7 @@ function logout() {
   firebase.auth().signOut();
 }
 
-function addWordToFirebase(word) {
+function addWordToFirebase(word: WordInterface): Promise<string | Error> {
   word.timestamp = firebase.firestore.Timestamp.now();
 
   return firebase
@@ -42,39 +51,45 @@ function addWordToFirebase(word) {
     .collection("woerte")
     .add(word)
     .then(function(docRef) {
-      console.log("Document written with ID: ", docRef.id);
+      const result = `Document written with ID: ${docRef.id}`;
+      console.log(result);
+      return result;
     })
     .catch(function(error) {
-      console.error("Error adding document: ", error);
+      const result = `Error adding document: ${error}`;
+      console.error(result);
+      return result;
     });
 }
 
-function getAllWords() {
+function getAllWords(): Promise<WordInterface[] | void> {
   return firebase
     .firestore()
     .collection("woerte")
     .orderBy("timestamp", "desc")
     .get()
     .then(snapshot => {
-      const words = [];
-      snapshot.forEach(doc => words.push(doc.data()));
+      const words: WordInterface[] = [];
+      snapshot.forEach(doc => words.push(doc.data() as WordInterface));
       return words;
     })
-    .catch(err => console.log(err));
+    .catch(error => {
+      console.log(error);
+    });
 }
 
-let firbaseAuthStateListener;
-
 function useFirebase() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<firebase.User | null>(null);
 
   !firebase.apps.length && firebase.initializeApp(firebaseConfig);
 
-  useEffect(() => {
-    firbaseAuthStateListener = firebase.auth().onAuthStateChanged(setUser);
-
-    return () => firbaseAuthStateListener();
-  }, []);
+  useEffect(
+    () =>
+      firebase.auth().onAuthStateChanged(user => {
+        user && setUser(user);
+      }),
+    []
+  );
 
   return {
     user,
