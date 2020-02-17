@@ -6,14 +6,14 @@ import useFirebase from "../hooks/useFirebase";
 const INITIAL_STATE = [
   {
     placeholder: "Email",
-    type: "email",
+    type: "email" as const,
     name: "email",
     value: "blessanm86@gmail.com",
     required: true
   },
   {
     placeholder: "Password",
-    type: "password",
+    type: "password" as const,
     name: "password",
     value: "",
     required: true
@@ -30,7 +30,7 @@ function Login() {
         ...prev,
         [property.name]: property.value
       };
-    }, {});
+    }, {} as { email: string; password: string });
     loginToFirebase(email, password);
     reset();
   };

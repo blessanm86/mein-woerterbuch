@@ -1,12 +1,17 @@
 import React from "react";
 
-import useForm from "../hooks/useForm";
-import useFirebase from "../hooks/useFirebase";
+import useForm, { InputInterface, ActionInterface } from "../hooks/useForm";
+import useFirebase, { WordInterface } from "../hooks/useFirebase";
+
+interface PropsInterface {
+  onAdd: Function;
+}
 
 const INITIAL_STATE = [
   {
     name: "type",
-    type: "select",
+    type: "select" as const,
+    value: "",
     placeholder: "Type",
     required: true,
     options: [
@@ -19,7 +24,7 @@ const INITIAL_STATE = [
   },
   {
     name: "article",
-    type: "select",
+    type: "select" as const,
     value: "",
     required: true,
     options: [
@@ -33,26 +38,26 @@ const INITIAL_STATE = [
   {
     name: "word",
     placeholder: "Word",
-    type: "text",
+    type: "text" as const,
     value: "",
     required: true
   },
   {
     name: "meaning",
     placeholder: "Meaning",
-    type: "text",
+    type: "text" as const,
     value: "",
     required: true
   },
   {
     name: "note",
     placeholder: "Note",
-    type: "text",
+    type: "text" as const,
     value: ""
   }
 ];
 
-function reducer(state, action) {
+function reducer(state: InputInterface[], action: ActionInterface) {
   const { type, name, value } = action;
 
   if (type === "edit" && name === "type") {
@@ -77,11 +82,11 @@ function reducer(state, action) {
   return state;
 }
 
-function validator(inputs) {
+function validator(inputs: InputInterface[]) {
   const inputMap = inputs.reduce((map, input) => {
     map[input.name] = input;
     return map;
-  }, {});
+  }, {} as { [key: string]: InputInterface });
 
   const requiredInputs = !inputs.some(input => {
     if (input.required && !input.value) {
@@ -103,7 +108,7 @@ function validator(inputs) {
   }
 }
 
-function Add({ onAdd }) {
+function Add({ onAdd }: PropsInterface) {
   const { state, isValid, change, reset } = useForm(INITIAL_STATE, {
     reducer,
     validator
@@ -116,7 +121,7 @@ function Add({ onAdd }) {
         ...prev,
         [property.name]: property.value
       };
-    }, {});
+    }, {} as WordInterface);
     addWordToFirebase(word).then(() => {
       reset();
       onAdd();
@@ -135,7 +140,7 @@ function Add({ onAdd }) {
               onChange={change}
               disabled={input.disabled}
             >
-              {input.options.map(option => (
+              {input.options?.map(option => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>

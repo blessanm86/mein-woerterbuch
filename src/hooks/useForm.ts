@@ -1,8 +1,8 @@
-import { useReducer, ChangeEvent } from "react";
+import { useReducer, ChangeEventHandler, ChangeEvent } from "react";
 
-interface Input {
+export interface InputInterface {
   name: string;
-  type: string;
+  type: "text" | "password" | "email" | "select";
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
@@ -10,26 +10,31 @@ interface Input {
   value: string;
 }
 
-interface Options {
+interface OptionsInterface {
   reducer?: Function;
   validator?: Function;
 }
 
-interface State {
-  state: Array<Input>;
+interface FormInterface {
+  state: InputInterface[];
   isValid: boolean;
-  change: Function;
+  change: ChangeEventHandler;
   reset: Function;
 }
 
-interface Action {
+export interface ActionInterface {
   type: string;
   name?: string;
   value?: string;
 }
 
-function useForm(inputs: Array<Input>, options: Options = {}): State {
-  function change(evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+function useForm(
+  inputs: InputInterface[],
+  options: OptionsInterface = {}
+): FormInterface {
+  function change(
+    evt: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ): void {
     const {
       target: { name, value }
     } = evt;
@@ -40,7 +45,7 @@ function useForm(inputs: Array<Input>, options: Options = {}): State {
     dispatch({ type: "reset" });
   }
 
-  function validator(inputs: Array<Input>) {
+  function validator(inputs: InputInterface[]) {
     return !inputs.some(input => {
       if (input.required && !input.value) {
         return true;
@@ -50,7 +55,10 @@ function useForm(inputs: Array<Input>, options: Options = {}): State {
     });
   }
 
-  function reducer(state: State, action: Action): State {
+  function reducer(
+    state: FormInterface,
+    action: ActionInterface
+  ): FormInterface {
     const { state: inputs } = state;
     const { type, name, value } = action;
 
