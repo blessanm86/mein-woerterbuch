@@ -25,12 +25,15 @@ function Login() {
   const { loginToFirebase } = useFirebase();
 
   const login = () => {
-    const { email, password } = state.reduce((prev, property) => {
-      return {
-        ...prev,
-        [property.name]: property.value
-      };
-    }, {} as { email: string; password: string });
+    const { email, password } = state.reduce<{ [key: string]: string }>(
+      (prev, property) => {
+        return {
+          ...prev,
+          [property.name]: property.value
+        };
+      },
+      {}
+    );
     loginToFirebase(email, password);
     reset();
   };
