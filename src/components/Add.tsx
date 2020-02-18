@@ -83,10 +83,13 @@ function reducer(state: InputInterface[], action: ActionInterface) {
 }
 
 function validator(inputs: InputInterface[]) {
-  const inputMap = inputs.reduce((map, input) => {
-    map[input.name] = input;
-    return map;
-  }, {} as { [key: string]: InputInterface });
+  const inputMap = inputs.reduce<{ [key: string]: InputInterface }>(
+    (map, input) => {
+      map[input.name] = input;
+      return map;
+    },
+    {}
+  );
 
   const requiredInputs = !inputs.some(input => {
     if (input.required && !input.value) {
