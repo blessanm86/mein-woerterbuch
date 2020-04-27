@@ -1,5 +1,5 @@
 import React from "react";
-import { render, wait } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import App from "../App";
 import useFirebase from "../../hooks/useFirebase";
 
@@ -10,8 +10,8 @@ test("Login Page", async () => {
     user: null,
     getAllWords: () =>
       Promise.resolve([
-        { type: "noun", word: "Tisch", article: "Der", meaning: "Table" }
-      ])
+        { type: "noun", word: "Tisch", article: "Der", meaning: "Table" },
+      ]),
   });
 
   const { getByDisplayValue, getByPlaceholderText, getByText } = render(
@@ -26,5 +26,5 @@ test("Login Page", async () => {
   expect(loginButton).toBeInTheDocument();
   expect(loginButton).toBeDisabled();
 
-  await wait();
+  await waitFor(() => {});
 });
