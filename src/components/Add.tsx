@@ -21,6 +21,7 @@ const INITIAL_STATE = [
       { label: "Verb", value: "verb" },
       { label: "Adverb", value: "adverb" },
       { label: "Preposition", value: "preposition" },
+      { label: "Pronoun", value: "pronoun" },
     ],
   },
   {
