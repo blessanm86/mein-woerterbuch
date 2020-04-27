@@ -19,42 +19,41 @@ const INITIAL_STATE = [
       { label: "Noun", value: "noun" },
       { label: "Adjective", value: "adjective" },
       { label: "Verb", value: "verb" },
-      { label: "Adverb", value: "adverb" }
-    ]
+      { label: "Adverb", value: "adverb" },
+    ],
   },
   {
     name: "article",
     type: "select" as const,
     value: "",
-    required: true,
     options: [
       { label: "Select Article", value: "" },
       { label: "Der", value: "der" },
       { label: "Die", value: "die" },
-      { label: "Das", value: "das" }
+      { label: "Das", value: "das" },
     ],
-    disabled: false
+    disabled: false,
   },
   {
     name: "word",
     placeholder: "Word",
     type: "text" as const,
     value: "",
-    required: true
+    required: true,
   },
   {
     name: "meaning",
     placeholder: "Meaning",
     type: "text" as const,
     value: "",
-    required: true
+    required: true,
   },
   {
     name: "note",
     placeholder: "Note",
     type: "text" as const,
-    value: ""
-  }
+    value: "",
+  },
 ];
 
 function reducer(state: InputInterface[], action: ActionInterface) {
@@ -62,19 +61,19 @@ function reducer(state: InputInterface[], action: ActionInterface) {
 
   if (type === "edit" && name === "type") {
     if (value !== "noun") {
-      const index = state.findIndex(input => input.name === "article");
+      const index = state.findIndex((input) => input.name === "article");
       return [
         ...state.slice(0, index),
         { ...state[index], value: "", disabled: true },
-        ...state.slice(index + 1)
+        ...state.slice(index + 1),
       ];
     } else {
-      const index = state.findIndex(input => input.name === "article");
+      const index = state.findIndex((input) => input.name === "article");
 
       return [
         ...state.slice(0, index),
         { ...state[index], disabled: false },
-        ...state.slice(index + 1)
+        ...state.slice(index + 1),
       ];
     }
   }
@@ -91,7 +90,7 @@ function validator(inputs: InputInterface[]) {
     {}
   );
 
-  const requiredInputs = !inputs.some(input => {
+  const requiredInputs = !inputs.some((input) => {
     if (input.required && !input.value) {
       return true;
     }
@@ -114,7 +113,7 @@ function validator(inputs: InputInterface[]) {
 function Add({ onAdd }: PropsInterface) {
   const { state, isValid, change, reset } = useForm(INITIAL_STATE, {
     reducer,
-    validator
+    validator,
   });
   const { addWordToFirebase } = useFirebase();
 
@@ -122,7 +121,7 @@ function Add({ onAdd }: PropsInterface) {
     const word = state.reduce((prev, property) => {
       return {
         ...prev,
-        [property.name]: property.value
+        [property.name]: property.value,
       };
     }, {} as WordInterface);
     addWordToFirebase(word).then(() => {
@@ -133,7 +132,7 @@ function Add({ onAdd }: PropsInterface) {
 
   return (
     <section className="wb-add">
-      {state.map(input => {
+      {state.map((input) => {
         if (input.type === "select") {
           return (
             <select
@@ -143,7 +142,7 @@ function Add({ onAdd }: PropsInterface) {
               onChange={change}
               disabled={input.disabled}
             >
-              {input.options?.map(option => (
+              {input.options?.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
