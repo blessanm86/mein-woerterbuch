@@ -20,6 +20,7 @@ const INITIAL_STATE = [
       { label: "Adjective", value: "adjective" },
       { label: "Verb", value: "verb" },
       { label: "Adverb", value: "adverb" },
+      { label: "Preposition", value: "preposition" },
     ],
   },
   {
