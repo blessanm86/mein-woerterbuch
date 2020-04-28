@@ -10,6 +10,9 @@ export interface WordInterface {
   timestamp: firebase.firestore.Timestamp;
   type: string;
   word: string;
+  nextPracticeTime: number;
+  lastTimeEasy: number;
+  consecutiveCorrectAnswer: number;
 }
 
 const firebaseConfig = {
@@ -20,14 +23,14 @@ const firebaseConfig = {
   storageBucket: "mein-woerterbuch.appspot.com",
   messagingSenderId: "241459052506",
   appId: "1:241459052506:web:2ccf2b897f16845452cae3",
-  measurementId: "G-06SEN5MFN2"
+  measurementId: "G-06SEN5MFN2",
 };
 
 function loginToFirebase(email: string, password: string): void {
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
-    .catch(function(error) {
+    .catch(function (error) {
       var errorCode = error.code;
       var errorMessage = error.message;
       if (errorCode === "auth/wrong-password") {
@@ -50,12 +53,12 @@ function addWordToFirebase(word: WordInterface): Promise<string | Error> {
     .firestore()
     .collection("woerte")
     .add(word)
-    .then(function(docRef) {
+    .then(function (docRef) {
       const result = `Document written with ID: ${docRef.id}`;
       console.log(result);
       return result;
     })
-    .catch(function(error) {
+    .catch(function (error) {
       const result = `Error adding document: ${error}`;
       console.error(result);
       return result;
@@ -68,12 +71,12 @@ function getAllWords(): Promise<WordInterface[] | void> {
     .collection("woerte")
     .orderBy("timestamp", "desc")
     .get()
-    .then(snapshot => {
+    .then((snapshot) => {
       const words: WordInterface[] = [];
-      snapshot.forEach(doc => words.push(doc.data() as WordInterface));
+      snapshot.forEach((doc) => words.push(doc.data() as WordInterface));
       return words;
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 }
@@ -85,7 +88,7 @@ function useFirebase() {
 
   useEffect(
     () =>
-      firebase.auth().onAuthStateChanged(user => {
+      firebase.auth().onAuthStateChanged((user) => {
         user && setUser(user);
       }),
     []
@@ -96,7 +99,7 @@ function useFirebase() {
     loginToFirebase,
     addWordToFirebase,
     getAllWords,
-    logout
+    logout,
   };
 }
 

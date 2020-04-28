@@ -126,6 +126,11 @@ function Add({ onAdd }: PropsInterface) {
         [property.name]: property.value,
       };
     }, {} as WordInterface);
+
+    word.nextPracticeTime = Date.now();
+    word.consecutiveCorrectAnswer = 0;
+    word.lastTimeEasy = Date.now();
+
     addWordToFirebase(word).then(() => {
       reset();
       onAdd();
