@@ -8,13 +8,22 @@ body {
   font-size: 16px;
   background-color: #282c34;
   color: #ffffff;
+  --column-width: 420px;
+  --grid-gap: 50px;
 }
 
 .woerterbuch {
   display: grid;
-  grid-template-columns: max-content;
-  justify-content: center;
-  grid-gap: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(var(--column-width), 1fr));
+  justify-items: center;
+  margin-top: var(--grid-gap);
+  grid-gap: var(--grid-gap);
+}
+
+.woerterbuch > * {
+  display: grid;
+  grid-gap: var(--grid-gap);
+  align-content: flex-start;
 }
 
 h1,
@@ -33,9 +42,8 @@ h3 {
 .wb-login,
 .wb-add {
   display: grid;
-  grid-template-columns: 300px;
+  grid-template-columns: var(--column-width);
   grid-gap: 10px;
-  /* justify-content: center; */
 }
 
 select,
@@ -53,7 +61,7 @@ button {
 }
 
 .wb-word {
-  max-width: 356px;
+  max-width: var(--column-width);
   display: grid;
   grid-gap: 5px;
 }
@@ -85,7 +93,6 @@ button {
 }
 
 .wb-toggle {
-  width: 300px;
   display: flex;
 }
 
