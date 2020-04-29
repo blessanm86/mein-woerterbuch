@@ -17,7 +17,7 @@ function App() {
   (window as Global).logout = logout;
 
   const getWords = () => {
-    getAllWords().then(words => words && setWords(words));
+    getAllWords().then((words) => words && setWords(words));
   };
 
   useEffect(getWords, [getAllWords]);
