@@ -83,3 +83,31 @@ button {
   color: #3cc;
   font-style: italic;
 }
+
+.wb-toggle {
+  width: 300px;
+  display: flex;
+}
+
+.wb-toggle label {
+  height: 48px;
+  display: inline-block;
+  background: #fff;
+  flex: 1;
+  color: #000;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wb-toggle input:checked + label {
+  background: #ccc;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000;
+}
+
+.wb-toggle input {
+  display: none;
+}
