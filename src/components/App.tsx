@@ -6,6 +6,7 @@ import useFirebase, { WordInterface } from "../hooks/useFirebase";
 import Login from "./Login";
 import Add from "./Add";
 import View from "./View";
+import Toggle from "./Toggle";
 
 interface Global {
   logout?: Function;
@@ -24,13 +25,18 @@ function App() {
 
   return (
     <section className="woerterbuch">
-      <header>
-        <h1>Mein</h1>
-        <h1>Wörterbuch</h1>
-      </header>
-      {/* <button onClick={logout}>Logout</button> */}
-      {user ? <Add onAdd={getWords} /> : <Login />}
-      <View words={words} />
+      <div>
+        <header>
+          <h1>Mein</h1>
+          <h1>Wörterbuch</h1>
+        </header>
+        {user ? <Add onAdd={getWords} /> : <Login />}
+        {/* <button onClick={logout}>Logout</button> */}
+      </div>
+      <div>
+        <Toggle />
+        <View words={words} />
+      </div>
     </section>
   );
 }
