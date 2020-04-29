@@ -10,6 +10,10 @@ body {
   color: #ffffff;
   --column-width: 420px;
   --grid-gap: 50px;
+  --color-white: #fff;
+  --color-black: #000;
+  --color-gray: #ccc;
+  --color-green: #3cc;
 }
 
 .woerterbuch {
@@ -24,6 +28,7 @@ body {
   display: grid;
   grid-gap: var(--grid-gap);
   align-content: flex-start;
+  grid-template-columns: var(--column-width);
 }
 
 h1,
@@ -42,14 +47,13 @@ h3 {
 .wb-login,
 .wb-add {
   display: grid;
-  grid-template-columns: var(--column-width);
   grid-gap: 10px;
 }
 
 select,
 input,
 button {
-  background-color: #fff;
+  background-color: var(--color-white);
   height: 48px;
   font-size: 1.5rem;
   padding: 0 10px;
@@ -61,7 +65,6 @@ button {
 }
 
 .wb-word {
-  max-width: var(--column-width);
   display: grid;
   grid-gap: 5px;
 }
@@ -88,7 +91,7 @@ button {
 .wb-word-type {
   font-size: 1rem;
   margin-left: 5px;
-  color: #3cc;
+  color: var(--color-green);
   font-style: italic;
 }
 
@@ -99,9 +102,9 @@ button {
 .wb-toggle label {
   height: 48px;
   display: inline-block;
-  background: #fff;
+  background: var(--color-white);
   flex: 1;
-  color: #000;
+  color: var(--color-black);
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -109,10 +112,10 @@ button {
 }
 
 .wb-toggle input:checked + label {
-  background: #ccc;
-  -moz-box-shadow: inset 0 0 10px #000000;
-  -webkit-box-shadow: inset 0 0 10px #000000;
-  box-shadow: inset 0 0 10px #000;
+  background: var(--color-gray);
+  -moz-box-shadow: inset 0 0 10px var(--color-black);
+  -webkit-box-shadow: inset 0 0 10px var(--color-white);
+  box-shadow: inset 0 0 10px var(--color-black);
 }
 
 .wb-toggle input {
