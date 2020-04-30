@@ -81,6 +81,26 @@ function getAllWords(): Promise<WordInterface[] | void> {
     });
 }
 
+function getWord(search: string): Promise<WordInterface | void> {
+  return firebase
+    .firestore()
+    .collection("woerte")
+    .where("word", "==", search)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        return;
+      } else {
+        const words: WordInterface[] = [];
+        snapshot.forEach((doc) => words.push(doc.data() as WordInterface));
+        return words[0];
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 function useFirebase() {
   const [user, setUser] = useState<firebase.User | null>(null);
 
@@ -99,6 +119,7 @@ function useFirebase() {
     loginToFirebase,
     addWordToFirebase,
     getAllWords,
+    getWord,
     logout,
   };
 }
