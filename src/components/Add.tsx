@@ -117,13 +117,13 @@ function Add({ onAdd }: PropsInterface) {
     reducer,
     validator,
   });
-  const { addWordToFirebase } = useFirebase();
+  const { addWordToFirebase, getWord } = useFirebase();
 
-  const addWord = () => {
+  const addWord = async () => {
     const word = state.reduce((prev, property) => {
       return {
         ...prev,
-        [property.name]: property.value,
+        [property.name]: property.value.toLowerCase(),
       };
     }, {} as WordInterface);
 
@@ -131,10 +131,14 @@ function Add({ onAdd }: PropsInterface) {
     word.consecutiveCorrectAnswer = 0;
     word.lastTimeEasy = Date.now();
 
-    addWordToFirebase(word).then(() => {
+    const result = await getWord(word.word);
+    if (result) {
+      alert("Word Already Exists");
+    } else {
+      await addWordToFirebase(word);
       reset();
       onAdd();
-    });
+    }
   };
 
   return (

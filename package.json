@@ -37,7 +37,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,md}": "yarn format"
+    "*.{js,jsx,ts,tsx,json,css,md,yaml}": "yarn format"
   },
   "eslintConfig": {
     "extends": "react-app"
