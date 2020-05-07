@@ -131,7 +131,7 @@ function Add({ onAdd }: PropsInterface) {
     word.consecutiveCorrectAnswer = 0;
     word.lastTimeEasy = Date.now();
 
-    const result = await getWord(word.word);
+    const result = await getWord(word.word, word.type);
     if (result) {
       alert("Word Already Exists");
     } else {

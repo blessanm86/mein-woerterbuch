@@ -81,11 +81,12 @@ function getAllWords(): Promise<WordInterface[] | void> {
     });
 }
 
-function getWord(search: string): Promise<WordInterface | void> {
+function getWord(search: string, type: string): Promise<WordInterface | void> {
   return firebase
     .firestore()
     .collection("woerte")
     .where("word", "==", search)
+    .where("type", "==", type)
     .get()
     .then((snapshot) => {
       if (snapshot.empty) {
